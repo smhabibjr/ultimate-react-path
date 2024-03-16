@@ -3,7 +3,7 @@ export default function Clock({locale}) {
   return <div>
     <h1>
         <span>
-            Now {new Date().toLocaleDateString(locale)}
+            Now {new Date().toLocaleTimeString(locale)}
         </span>
     </h1>
   </div>;
