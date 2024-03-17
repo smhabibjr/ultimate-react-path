@@ -1,14 +1,49 @@
-import PropTypes from "prop-types"
-export default function Clock({locale}) {
-  return <div>
-    <h1>
-        <span>
-            Now {new Date().toLocaleTimeString(locale)}
-        </span>
-    </h1>
-  </div>;
-}
+import React from "react";
 
-Clock.propTypes = {
-    locale: PropTypes.string,
+export default class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: new Date(),
+      counter: 0,
+    };
+  }
+  componentDidMount() {
+    this.clockTimer = setInterval(() => {
+      this.tick();
+    }, 1000);
+  }
+
+  tick() {
+    this.setState((state, props) => {
+        
+      state.counter++;
+    });
+
+    if (this.state.counter >= 10) {
+      this.setState({
+        counter: 0,
+      });
+    }
+    this.setState({
+      date: new Date(),
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.clockTimer);
+  }
+
+  render() {
+    return (
+      <div>
+        <h6>
+          <span>
+            It is {this.state.date.toLocaleTimeString(this.props.locale)}
+          </span>
+        </h6>
+        <p> {this.state.counter} </p>
+      </div>
+    );
+  }
 }
