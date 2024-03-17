@@ -1,60 +1,54 @@
-# What is the difference between Element and Component?
+# Class component, state , setState and lifycycle hook.
 
-Element:
+```js
+import React from "react";
 
-An element is a plain JavaScript object that describes a DOM node or component instance in the React virtual DOM.
+export default class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: new Date(),
+      counter: 0,
+    };
+  }
+  componentDidMount() {
+    this.clockTimer = setInterval(() => {
+      this.tick();
+    }, 1000);
+  }
 
-Elements are lightweight representations of components. They are created using JSX or React.createElement().
+  tick() {
+    this.setState((state, props) => {
+        
+      state.counter++;
+    });
 
-Component:
+    if (this.state.counter >= 10) {
+      this.setState({
+        counter: 0,
+      });
+    }
+    this.setState({
+      date: new Date(),
+    });
+  }
 
-A component is a JavaScript function or class that returns a React element.
+  componentWillUnmount() {
+    clearInterval(this.clockTimer);
+  }
 
-Components are the building blocks of a React application. They encapsulate logic and UI elements into reusable pieces.
-
-Components can accept input data via props and manage their internal state (for class components or using hooks in functional components).
-
-```javascript
-// Function component
-
-function Greeting({ message }) {
-  return <h1>{`Hello, ${message}`}</h1>;
-}
-
-// class Component
-class Greeting extends React.Component {
   render() {
-    return <h1>{`Hello, ${this.props.message}`}</h1>;
+    return (
+      <div>
+        <h6>
+          <span>
+            It is {this.state.date.toLocaleTimeString(this.props.locale)}
+          </span>
+        </h6>
+        <p> {this.state.counter} </p>
+      </div>
+    );
   }
 }
-```
 
-### Typechecking With PropTypes
-
-Step 1: yarn add prop-types
-
-Step 2: import PropTypes from 'prop-types';
-
-Step 3:
-
-```js
-MyComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
-```
-
-### Default Prop Values
-
-```js
-MyComponent.defaultProps = {
-  name: "John Doe",
-  age: 30,
-  isActive: false,
-  onClick: () => {
-    console.log("Default click handler");
-  },
-};
 ```
