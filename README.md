@@ -1,54 +1,59 @@
-# Class component, state , setState and lifycycle hook.
+# Declare events and pass parameters.
+
+#### common pattern
 
 ```js
-import React from "react";
+// button
+<button onClick={() => this.btnClickHandler("en-US")}>Click me!</button>;
 
-export default class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date(),
-      counter: 0,
-    };
-  }
-  componentDidMount() {
-    this.clockTimer = setInterval(() => {
-      this.tick();
-    }, 1000);
-  }
+btnHandler = (e, locale) => {
+  e.preventDefault();
+  this.setState({
+    locale: locale,
+  });
+};
+```
 
-  tick() {
-    this.setState((state, props) => {
-        
-      state.counter++;
-    });
+#### Using bind method
 
-    if (this.state.counter >= 10) {
-      this.setState({
-        counter: 0,
-      });
-    }
-    this.setState({
-      date: new Date(),
-    });
-  }
+```js
+// button
+<button onClick={this.btnClickHandler.bind(this,"en-US") }>Click me!</button>
 
-  componentWillUnmount() {
-    clearInterval(this.clockTimer);
-  }
-
-  render() {
-    return (
-      <div>
-        <h6>
-          <span>
-            It is {this.state.date.toLocaleTimeString(this.props.locale)}
-          </span>
-        </h6>
-        <p> {this.state.counter} </p>
-      </div>
-    );
-  }
+btnHandler(e, locale){
+  e.preventDefault()
+  this.setState({
+    locale: locale
+  })
 }
 
+```
+
+Using an arrow function (() =>) within the onClick event handler in React is a common pattern. This is done to ensure that the function is called with the correct context and parameters.
+
+Let me explain why this pattern is used:
+
+Preserving the Context: When you directly call a method like this.btnClickHandler("en-US") within the onClick attribute, it will lose the context of this within the method. This is because the onClick event handler will be executed in the context of the DOM element that triggered the event, not the React component instance. By using an arrow function, you ensure that the context of this remains the same as the component instance.
+
+Passing Parameters: If you need to pass parameters to the event handler function (in this case, the locale "en-US"), you need to use an arrow function or a function binding to capture the parameters correctly. If you directly call this.btnClickHandler("en-US") without using an arrow function, the method will be called immediately when the component renders, rather than waiting for the click event.
+
+Therefore, using an arrow function (() =>) ensures that the event handler function is called with the correct context (this) and parameters when the event occurs.
+
+### shouldComponentUpdate
+
+
+The shouldComponentUpdate method is a lifecycle method in React that allows you to optimize performance by indicating whether a component should re-render or not. It is called before the render() method, and it can return true or false to indicate whether React should continue with the update process.
+
+Performance Optimization, Preventing Unnecessary Renders, Avoiding Unwanted Side Effects
+
+```js
+shouldComponentUpdate(nextProps) {
+    const { clickHandler: currentProps } = this.props;
+    const { clickHandler: nextClickHandler } = nextProps;
+    if (currentProps === nextClickHandler) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 ```
