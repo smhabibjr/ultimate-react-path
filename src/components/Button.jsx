@@ -12,11 +12,14 @@ export default class Button extends React.Component {
     }
   }
   render() {
-    const { clickHandler, locale } = this.props;
+    const { clickHandler, locale, show } = this.props;
     return (
-      <button type="button" onClick={() => clickHandler(locale)}>
-        Button
-      </button>
+      <>
+        <button type="button" onClick={() => clickHandler(locale)}>
+          {locale === "bn-BD" ? "Bangla clock" : "German clock"}
+        </button>
+        {show && <p>show subtitle of button</p>}
+      </>
     );
   }
 }
@@ -24,4 +27,6 @@ export default class Button extends React.Component {
 Button.propTypes = {
   clickHandler: PropsTypes.func,
   locale: PropsTypes.string,
+  children: PropsTypes.any,
+  show: PropsTypes.bool,
 };

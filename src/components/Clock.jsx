@@ -43,6 +43,7 @@ export default class Clock extends React.Component {
 
   render() {
     const { date, counter, locale } = this.state;
+
     return (
       <div>
         <h6>
@@ -50,9 +51,11 @@ export default class Clock extends React.Component {
         </h6>
         <p> {counter} </p>
 
-        <Button clickHandler={this.btnHandler} locale="de-DE">
-          Click me!
-        </Button>
+        <Button
+          clickHandler={this.btnHandler}
+          locale={locale === "bn-BD" ? "de-DE" : "bn-BD"}
+          show={locale === "bn-BD"? true: false}
+        />
       </div>
     );
   }
