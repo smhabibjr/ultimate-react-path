@@ -1,56 +1,68 @@
-# React conditional rendering, List and Keys
-
-#### conditional (ternary) expression
+# React Form. Controlled vs Uncontrolled
 
 ```js
-// Example 1:
-<Button
-  clickHandler={this.btnHandler}
-  locale={locale === "bn-BD" ? "de-DE" : "bn-BD"}
-  show={locale === "bn-BD"? true: false}
-/>
+// Input element
+<input
+  type="text"
+  placeholder="Enter your name"
+  value={title}
+  onChange={this.inputHandler}
+/>;
 
-// Example 2:
+// On change handler
 
-<button type="button" onClick={() => clickHandler(locale)}>
-  {locale === "bn-BD" ? "Bangla clock" : "German clock"}
-</button>
-```
-
-#### Conditional rendering based on boolean value.
-
-```js
-{
-  show && <p>show subtitle of button</p>;
-}
-```
-
-### Map, list, key
-
-```js
-const numberOfClock = [1, 2, 3];
-
-{
-  numberOfClock.map((key) => <Clock key={key} />);
-}
-```
-
-### Implicit return and Explicit return
-
-```js
-{
-  numberOfClock.map((key) => <Clock key={key} />);
-}
-```
-
-Here, the arrow function body is enclosed in parentheses (). This syntax is often referred to as "implicit return" because it automatically returns the value inside the parentheses. In this case, it implicitly returns the <Clock key={key} /> component for each item in the numberOfClock array.
-
-```js
-{
-  numberOfClock.map((key) => {
-    return <Clock key={key} />;
+inputHandler = (e) => {
+  console.log(e.target.value);
+  this.setState({
+    title: e.target.value,
   });
-}
+};
 ```
 
-Here, the arrow function body is enclosed in curly braces {}. This syntax allows for multiple statements and an explicit return statement. In this case, the <Clock key={key} /> component is explicitly returned from the arrow function.
+#### Multiple input handling using the same function
+
+```js
+inputHandler = (e) => {
+  if (e.target.type === "text") {
+    this.setState({
+      title: e.target.value,
+    });
+  } else if (e.target.type === "textarea") {
+    this.setState({
+      text: e.target.value,
+    });
+  } else if (e.target.type === "select-one") {
+    this.setState({
+      selectValue: e.target.value,
+    });
+  } else if (e.target.type === "checkbox") {
+    this.setState({
+      isAwesome: e.target.checked,
+    });
+  }
+};
+```
+
+### React form with submit button
+
+```js
+<form onSubmit={this.submitHandler}>
+  <label htmlFor="userName">Enter your name:</label>
+  <input
+    style={{ marginTop: "10px" }}
+    type="text"
+    id="userName"
+    placeholder="Enter your name"
+    value={title}
+    onChange={this.inputHandler}
+  />
+
+  <input type="submit" />
+</form>
+
+// Form handler function
+submitHandler = (e) => {
+  e.preventDefault();
+  alert(JSON.stringify(this.state));
+};
+```
